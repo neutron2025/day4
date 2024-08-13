@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres
+    container_name: dev-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
+    networks:
+      - dev-network
+    volumes:
+      - ./platform/migrations:/migrations # 迁移文件夹挂载到容器内
+      - dev-postgres-data:/var/lib/postgresql/data # 数据卷用于数据持久化
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+networks:
+  dev-network:
+    driver: bridge
+
+volumes:
+  dev-postgres-data: # 定义数据卷
